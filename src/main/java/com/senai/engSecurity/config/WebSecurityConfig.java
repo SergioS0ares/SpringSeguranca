@@ -44,12 +44,11 @@ public class WebSecurityConfig {
                         .requestMatchers(URL + "/").permitAll()
                         .requestMatchers(HttpMethod.POST, "user").permitAll()
                         .requestMatchers(HttpMethod.POST, "user/login").permitAll()
-                        .requestMatchers(URL + "api/user").hasAnyRole("USER", "ADM")
-                        .requestMatchers(URL + "/adm").hasAnyRole("ADM")
+                        .requestMatchers(URL + "/user/list").hasAnyRole("ADM", "GERENTE")  // Acesso restrito a ADM e Gerente
+                        .requestMatchers(URL + "/adm").hasRole("ADM")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
-
 }

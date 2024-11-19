@@ -5,9 +5,11 @@ import com.senai.engSecurity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("user")
-@CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST}) // Aplica CORS para todos os métodos desse controlador
+@CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST})
 public class UserController {
 
     @Autowired
@@ -21,5 +23,10 @@ public class UserController {
     @PostMapping("/login")
     public User login(@RequestBody User user) {
         return userService.findByUsernameAndPassword(user);
+    }
+
+    @GetMapping("/list")
+    public List<User> getUsersList() {
+        return userService.findAllUsers();
     }
 }

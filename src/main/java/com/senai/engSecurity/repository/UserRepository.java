@@ -1,14 +1,35 @@
-package com.senai.engSecurity.repository;
+package com.senai.engSecurity.service;
 
 import com.senai.engSecurity.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.senai.engSecurity.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
-@Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+@Service
+public class UserService {
 
-    Optional<User> findByUsername(String username);
-    Optional<User> findByUsernameAndPassword(String username, String password);
+    @Autowired
+    private UserRepository userRepository;
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    public User findByUsernameAndPassword(User user) {
+        return this.userRepository
+                .findByUsernameAndPassword(user.getUsername(), user.getPassword())
+                .orElseThrow(() -> new UsernameNotFoundException(user.getUsername()));
+    }
+
+    // Novo método para buscar todos os usuários
+    public List<User> findAllUsers() {
+        return userRepository.findAll();  // Retorna todos os usuários
+    }
 }
